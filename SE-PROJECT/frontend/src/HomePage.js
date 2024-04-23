@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './HomePage.css'; // Import the CSS file
 
 const HomePage = () => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate()
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -13,6 +14,8 @@ const HomePage = () => {
     e.preventDefault();
     // You can handle the search here
     console.log("Searching for:", searchQuery);
+    if(searchQuery === "") alert("Incorrect Value")
+    navigate(`/${searchQuery}`);
   };
 
   return (
@@ -27,12 +30,12 @@ const HomePage = () => {
       <div className="content">
         <h1>Discover your next great adventure, become an explorer to get started!</h1>
         <form onSubmit={handleSubmit} className="search-form">
-          <input
-            type="text"
-            placeholder="Search for your destination..."
-            value={searchQuery}
-            onChange={handleSearchChange}
-          />
+          <select name="search" className='search' id="search" value={searchQuery} onChange={handleSearchChange}>
+            <option value="" disabled selected>Search for your destination...</option>
+            <option value="kashmir">Kashmir</option>
+            <option value="hunza">Hunza</option>
+            <option value="kpk">KPK</option>
+          </select>
           <button type="submit">Search</button>
         </form>
       </div>

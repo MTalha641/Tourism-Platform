@@ -7,6 +7,9 @@ import SaifUlMalook from './SaifUlMalook';
 import Attabad from './Attabad';
 import Shangrila from './Shangrila';
 import Trips from './Trips';
+import Hunza from './Hunza';
+import KPK from './KPK';
+import Kashmir from './Kashmir';
 
 const App = () => {
   return (
@@ -18,6 +21,9 @@ const App = () => {
         <Route path="/attabad-lake" element={<Attabad />} />
         <Route path="/shangrila-lake" element={<Shangrila />} />
         <Route path="/trips" element={<Trips />} /> {/* Add new route for Trips */}
+        <Route path="/hunza" element={<Hunza />} /> {/* Add new route for Trips */}
+        <Route path="/kpk" element={<KPK />} /> {/* Add new route for Trips */}
+        <Route path="/kashmir" element={<Kashmir />} /> {/* Add new route for Trips */}
         <Route path="*" element={<LakesSection />} /> {/* Wildcard route for unknown paths */}
       </Routes>
     </Router>
