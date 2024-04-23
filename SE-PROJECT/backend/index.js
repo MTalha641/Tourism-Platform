@@ -3,7 +3,8 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import asyncHandler from 'express-async-handler'
 import dotenv from 'dotenv'
-import tripRoute from './routes/TripRoutes.js'
+//import tripRoute from '../routes/tripRoute.js'
+import tripRoute from './src/routes/tripRoute.js';
 
 dotenv.config()
 
@@ -17,7 +18,7 @@ const mongoUri = process.env.MONGO_URI;
 const databaseName = process.env.MONGO_DB_NAME;
 
 // Connect to MongoDB
-mongoose.connect(mongoUri, {useNewUrlParser:true , useUnifiedTopology: true});
+mongoose.connect(mongoUri);
 
 mongoose.connection.on('connected', () => {
   console.log(`Connected to mongodb database : ${databaseName}`)
@@ -32,5 +33,5 @@ app.use('/api/trips',tripRoute)
 
 // Define routes and middleware here
 app.listen(PORT, () => {
-    console.log(`Server is listenaing on port ${PORT}`);
+    console.log(`Server is listening on port ${PORT}`);
 });

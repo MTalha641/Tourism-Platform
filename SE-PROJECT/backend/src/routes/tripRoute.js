@@ -3,6 +3,7 @@ import cors from 'cors'
 import multer from 'multer'
 import path from 'path'
 import dotenv from 'dotenv'
+import mongoose from 'mongoose'
 
 const tripRoute = express.Router()
 tripRoute.use(express.json())
@@ -13,7 +14,17 @@ dotenv.config()
 
 const mongoUri = process.env.MONGO_URI;
 
-mongoose.connect(mongoUri,{useNewParser:true , useUnifiedTopology:true})
+const tripSchema = new mongoose.Schema({
+    image: { url: String, alt: String },
+    title: String,
+    description: String,
+    price: Number,
+    date: Date
+});
+
+const Trip = mongoose.model('Trip',tripSchema)
+
+mongoose.connect(mongoUri)
 
 tripRoute.get('/',async(req,res) => {
     try {
@@ -24,4 +35,4 @@ tripRoute.get('/',async(req,res) => {
     }
 })
 
-export default TripRoutes
+export default tripRoute
