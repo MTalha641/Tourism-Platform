@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import asyncHandler from 'express-async-handler'
 import dotenv from 'dotenv'
+import tripRoute from './routes/TripRoutes.js'
+
 dotenv.config()
 
 
