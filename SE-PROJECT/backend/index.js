@@ -31,6 +31,7 @@ app.use('/api/trips',tripRoute)
 
 
 
+
 // Define routes and middleware here
 app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`);

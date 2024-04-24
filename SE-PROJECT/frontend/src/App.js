@@ -10,6 +10,7 @@ import Trips from './Trips';
 import Hunza from './Hunza';
 import KPK from './KPK';
 import Kashmir from './Kashmir';
+import Search from './components/Search.js'
 
 const App = () => {
   return (
@@ -24,6 +25,7 @@ const App = () => {
         <Route path="/hunza" element={<Hunza />} /> {/* Add new route for Trips */}
         <Route path="/kpk" element={<KPK />} /> {/* Add new route for Trips */}
         <Route path="/kashmir" element={<Kashmir />} /> {/* Add new route for Trips */}
+        <Route path = "/search" element= {<Search/>}> </Route>
         <Route path="*" element={<LakesSection />} /> {/* Wildcard route for unknown paths */}
       </Routes>
     </Router>
