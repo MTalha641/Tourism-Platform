@@ -20,7 +20,7 @@ const tripSchema = new mongoose.Schema({
     description: String,
     price: Number,
     date: Date,
-    title: String
+    destination: String
 });
 tripSchema.index({ destination: 'text' });
 const Trip = mongoose.model('Trip',tripSchema)
@@ -38,8 +38,6 @@ tripRoute.get('/',async(req,res) => {
 tripRoute.get('/search', async (req, res) => {
     try {
         const { destination } = req.query;
-        const {search} = desintation
-        console.log(destination)
         
         // Check if destination is provided in the query parameters
         if (!destination) {
@@ -47,7 +45,7 @@ tripRoute.get('/search', async (req, res) => {
         }
 
         // Perform text-based search for the provided destination
-        const trips = await Trip.find(search);
+        const trips = await Trip.find({ $text: { $search: destination } });
 
         // Check if any trips are found
         if (!trips || trips.length === 0) {
@@ -61,6 +59,7 @@ tripRoute.get('/search', async (req, res) => {
         return res.status(err.code || 500).json({ error: err.error || "Internal Server Error" });
     }
 });
+
 
 
 
