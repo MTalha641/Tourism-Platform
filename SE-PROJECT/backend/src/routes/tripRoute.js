@@ -61,6 +61,60 @@ tripRoute.get('/search', async (req, res) => {
 });
 
 
+// tripRoute.get('/searchprice', async (req, res) => {
+//     try {
+//         const { destination, minPrice, maxPrice, maxDate } = req.query;
+
+//         // Construct query object based on available filters
+//         const query = {};
+//         if (destination) {
+//             query.destination = destination;
+//         }
+//         if (minPrice && !isNaN(minPrice)) {
+//             query.price = { $gte: parseInt(minPrice) };
+//         }
+//         if (maxPrice && !isNaN(maxPrice)) {
+//             query.price = { ...query.price, $lte: parseInt(maxPrice) };
+//         }
+//         if (maxDate) {
+//             query.date = { $lte: new Date(maxDate) };
+//         }
+
+//         // Perform search based on the constructed query
+//         const trips = await Trip.find(query);
+
+//         if (!trips || trips.length === 0) {
+//             throw { code: 404, error: "No trips found matching the search criteria" };
+//         }
+
+//         res.status(200).json(trips);
+//     } catch (err) {
+//         res.status(err.code || 500).json({ error: err.error || "Internal Server Error" });
+//     }
+// });
+
+
+
+
+// Assuming you're using Express.js for your backend
+
+
+
+// Route to search for trips based on relevant date
+tripRoute.get('/searchdate', async (req, res) => {
+  const { date } = req.query; // Assuming date is provided as a query parameter
+
+  try {
+    // Fetch trips that match or are after the provided date
+    const trips = await Trip.find({ date: { $gte: new Date(date) } });
+    res.json(trips);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to fetch data" });
+  }
+});
+
+
 
 
 

@@ -4,6 +4,9 @@ import './HomePage.css'; // Import the CSS file
 
 const HomePage = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+  const [maxDate, setMaxDate] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
@@ -17,6 +20,13 @@ const HomePage = () => {
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
+  };
+
+  const handleFilterSubmit = (e) => {
+    e.preventDefault();
+    // Construct filter query and navigate to search page
+    const filterQuery = `minPrice=${minPrice}&maxPrice=${maxPrice}&maxDate=${maxDate}`;
+    navigate(`/search?key=${encodeURIComponent(searchQuery)}&${filterQuery}`);
   };
 
   return (
@@ -39,6 +49,28 @@ const HomePage = () => {
           />
           <button type="submit">Search</button>
         </form>
+        <div className="filter-options">
+          <form onSubmit={handleFilterSubmit}>
+            {/* <input
+              type="number"
+              placeholder="Min Price"
+              value={minPrice}
+              onChange={(e) => setMinPrice(e.target.value)}
+            />
+            <input
+              type="number"
+              placeholder="Max Price"
+              value={maxPrice}
+              onChange={(e) => setMaxPrice(e.target.value)}
+            /> */}
+            <input
+              type="date"
+              value={maxDate}
+              onChange={(e) => setMaxDate(e.target.value)}
+            />
+            <button type="submit">Apply Filters</button>
+          </form>
+        </div>
       </div>
     </div>
   );
