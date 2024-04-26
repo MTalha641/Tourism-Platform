@@ -45,7 +45,18 @@ tripRoute.get('/search', async (req, res) => {
         }
 
         // Perform text-based search for the provided destination
-        const trips = await Trip.find({ $text: { $search: destination } });
+        // const trips = await Trip.find({ $text: { $search: destination } });
+
+        //const trips = await Trip.find({destination:{$regex : `/${destination.value}/i`}}).limit(5)
+
+        // const trips = await Trip.find({
+        //     destination: { $regex: new RegExp(destination, 'i') },
+        // }).limit(5);
+
+        const trips = await Trip.find({
+            destination: { $regex: new RegExp(`^${destination}`, 'i') },
+        }).limit(5);
+
 
         // Check if any trips are found
         if (!trips || trips.length === 0) {

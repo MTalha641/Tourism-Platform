@@ -17,7 +17,7 @@ const Search = () => {
         setSearchResults(data);
       } catch (error) {
         console.error("Error:", error);
-        alert("Failed to fetch data");
+        // alert("Failed to fetch data");
       }
     };
 

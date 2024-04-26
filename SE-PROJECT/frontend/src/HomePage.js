@@ -49,9 +49,9 @@ const HomePage = () => {
           />
           <button type="submit">Search</button>
         </form>
-        <div className="filter-options">
+        {/* <div className="filter-options">
           <form onSubmit={handleFilterSubmit}>
-            {/* <input
+            <input
               type="number"
               placeholder="Min Price"
               value={minPrice}
@@ -62,7 +62,7 @@ const HomePage = () => {
               placeholder="Max Price"
               value={maxPrice}
               onChange={(e) => setMaxPrice(e.target.value)}
-            /> */}
+            />
             <input
               type="date"
               value={maxDate}
@@ -70,7 +70,7 @@ const HomePage = () => {
             />
             <button type="submit">Apply Filters</button>
           </form>
-        </div>
+        </div> */}
       </div>
     </div>
   );

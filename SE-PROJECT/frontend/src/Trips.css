@@ -29,6 +29,9 @@
 .trip-details {
   font-size: 14px;
   color: #777;
+  display: flex;
+  flex-direction: column;
+  gap: 10 px;
 }
 
 .trip-info {
