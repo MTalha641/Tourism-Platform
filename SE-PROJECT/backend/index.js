@@ -5,6 +5,7 @@ import asyncHandler from 'express-async-handler'
 import dotenv from 'dotenv'
 //import tripRoute from '../routes/tripRoute.js'
 import tripRoute from './src/routes/tripRoute.js';
+import userRoute from './src/routes/userRoute.js'
 
 dotenv.config()
 
@@ -28,6 +29,7 @@ mongoose.connection.on('error', (err) => {
   console.error('Failed to connect to MongoDB:', err);
 });
 app.use('/api/trips',tripRoute)
+app.use('/api/users',userRoute)
 
 
 

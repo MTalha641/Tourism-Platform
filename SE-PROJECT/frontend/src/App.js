@@ -11,6 +11,8 @@ import Hunza from './Hunza';
 import KPK from './KPK';
 import Kashmir from './Kashmir';
 import Search from './components/Search.js'
+import Login from './components/Login.js';
+import Register from './components/Register.js';
 
 const App = () => {
   return (
@@ -27,6 +29,8 @@ const App = () => {
         <Route path="/kashmir" element={<Kashmir />} /> {/* Add new route for Trips */}
         <Route path = "/search" element= {<Search/>}> </Route>
         <Route path="*" element={<LakesSection />} /> {/* Wildcard route for unknown paths */}
+        <Route path="/login" element={<Login />} /> {/* Add new route for Trips */}
+        <Route path="/register" element={<Register/>} /> {/* Add new route for Trips */}
       </Routes>
     </Router>
   );
