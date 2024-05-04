@@ -36,8 +36,8 @@ const userInfoFromLocalStorage = localStorage.getItem("userInfo")
   : null;
 
 const initialState = {
-  cart: {
-    Trips: TripsFromLocalStorage,
+  Trips: {
+    AllTrips: TripsFromLocalStorage,
   },
   userLogin: { userInfo: userInfoFromLocalStorage },
 };

@@ -8,7 +8,7 @@ import {
     USER_REGISTER_REQUEST,
     USER_REGISTER_SUCCESS,
 } from '../Constants/UserConstants.js'
-import axios from 'react';
+import axios from 'axios';
 import { TRIPS_LIST_MY_RESET} from '../Constants/TripsConstants.js'
 
 export const login = (email, password) => async (dispatch) => {
@@ -57,13 +57,14 @@ export const register = (name,email, password,ph_num,address,city) => async (dis
         },
       };
       const { data } = await axios.post(
-        `http://localhost:8081/api/user/register`,
+        `http://localhost:8081/api/users/register`,
         { name, email, password,ph_num,address, city},
         config
       );
       dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
       dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
       localStorage.setItem("userInfo", JSON.stringify(data));
+      console.log(data)
     } catch (error) {
       console.log(error)
       dispatch({
