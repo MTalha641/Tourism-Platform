@@ -25,25 +25,28 @@ mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.error('MongoDB connection error:', err));
 
-userRoute.post('/register', async (req, res) => {
-    try {
-        const { name, email, password, ph_num, address, city } = req.body;
-
-        // Assuming 'users' is the name of your existing MongoDB collection
-        // Inserting a new document into the existing 'users' collection
-        const newUser = await mongoose.connection.db.collection('users').insertOne({
-            name: name,
-            email: email,
-            password: password,
-            ph_num: ph_num,
-            address: address,
-            city: city,
-        });
-
-        res.status(201).json({ message: 'User registration successful', userId: newUser.insertedId });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
+    userRoute.post('/register', async (req, res) => {
+        try {
+            console.log('Request body:', req.body); // Log request body
+            const { name, email, password, ph_num, address, city } = req.body;
+    
+            const newUser = new User({
+                name: name,
+                email: email,
+                password: password,
+                ph_num: ph_num,
+                address: address,
+                city: city,
+            });
+    
+            const savedUser = await newUser.save();
+            console.log('Saved user:', savedUser); // Log saved user
+    
+            res.status(201).json({ message: 'User registration successful', userId: savedUser._id });
+        } catch (err) {
+            console.error('Error during registration:', err); // Log error
+            res.status(500).json({ error: err.message });
+        }
+    });
+    
 export default userRoute;

@@ -6,6 +6,7 @@ import dotenv from 'dotenv'
 //import tripRoute from '../routes/tripRoute.js'
 import tripRoute from './src/routes/tripRoute.js';
 import userRoute from './src/routes/userRoute.js'
+import bodyParser from 'body-parser';
 
 dotenv.config()
 
@@ -14,6 +15,7 @@ const app = express();
 const PORT = process.env.PORT || 8081;
 app.use(cors());
 app.use(express.json());
+app.use(bodyParser.json());
 
 const mongoUri = process.env.MONGO_URI;
 const databaseName = process.env.MONGO_DB_NAME;
