@@ -26,9 +26,9 @@ const reducer = combineReducers({
 //   orderListMy: orderListMyReducer,
 });
 
-const TripsFromLocalStorage = localStorage.getItem("Trips")
-  ? JSON.parse(localStorage.getItem("Trips"))
-  : [];
+// const TripsFromLocalStorage = localStorage.getItem("Trips")
+//   ? JSON.parse(localStorage.getItem("Trips"))
+//   : [];
 
 // login
 const userInfoFromLocalStorage = localStorage.getItem("userInfo")
@@ -36,9 +36,9 @@ const userInfoFromLocalStorage = localStorage.getItem("userInfo")
   : null;
 
 const initialState = {
-  Trips: {
-    AllTrips: TripsFromLocalStorage,
-  },
+  // Trips: {
+  //   AllTrips: TripsFromLocalStorage,
+  // },
   userLogin: { userInfo: userInfoFromLocalStorage },
 };
 

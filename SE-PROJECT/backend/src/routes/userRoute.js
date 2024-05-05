@@ -2,7 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 const userRoute = express.Router();
 userRoute.use(express.json());
 userRoute.use(cors());
@@ -48,5 +49,39 @@ mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true })
             res.status(500).json({ error: err.message });
         }
     });
+
+    userRoute.post('/login', async (req, res) => {
+        const { email, password } = req.body;
     
+        try {
+            // Check if user with given email exists
+            const user = await User.findOne({ email });
+    
+            if (!user) {
+                return res.status(400).json({ message: 'Invalid email or password' });
+            }
+    
+            // Check if password is correct (compare plain text passwords)
+            if (user.password !== password) {
+                return res.status(400).json({ message: 'Invalid email or password' });
+            }
+
+            else {
+                console.log("Login Successful")
+            }
+    
+            // If email and password are correct, send user details in response
+            res.status(200).json({
+                user: {
+                    _id: user._id,
+                    name: user.name,
+                    email: user.email,
+                    // Add any other user details you want to send
+                }
+            });
+        } catch (error) {
+            console.error('Login error:', error);
+            res.status(500).json({ message: 'Server error' });
+        }
+    });
 export default userRoute;
