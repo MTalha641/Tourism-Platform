@@ -13,6 +13,7 @@ import Kashmir from './Kashmir';
 import Search from './components/Search.js'
 import Login from './components/Login.js';
 import Register from './components/Register.js';
+ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
   return (

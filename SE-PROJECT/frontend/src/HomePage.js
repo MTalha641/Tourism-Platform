@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './HomePage.css'; // Import the CSS file
 
 const HomePage = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [minPrice, setMinPrice] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");
-  const [maxDate, setMaxDate] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
@@ -22,55 +18,43 @@ const HomePage = () => {
     setSearchQuery(e.target.value);
   };
 
-  const handleFilterSubmit = (e) => {
-    e.preventDefault();
-    // Construct filter query and navigate to search page
-    const filterQuery = `minPrice=${minPrice}&maxPrice=${maxPrice}&maxDate=${maxDate}`;
-    navigate(`/search?key=${encodeURIComponent(searchQuery)}&${filterQuery}`);
-  };
-
   return (
-    <div className="home-page">
-      <nav className="navbar">
-        <ul>
-          <li><Link to="/trips">Trips</Link></li>
-          <li><Link to="/explore-pakistan">Explore Pakistan</Link></li>
-          <li><Link to="/register">Register</Link></li>
-        </ul>
+    <div
+      className="container-fluid homepage-background" // Added a class for the background image
+      style={{ 
+        backgroundImage: "url('https://images.unsplash.com/photo-1522312346375-d5f1a75f39e7')" // Corrected the image URL
+      }}
+    >
+      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <div className="container-fluid">
+          <Link className="navbar-brand" to="/">Tourism Platform</Link>
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+              <li className="nav-item">
+                <Link className="nav-link" to="/trips">Trips</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/explore-pakistan">Explore Pakistan</Link>
+              </li>
+            </ul>
+            <Link className="btn btn-outline-primary me-2" to="/register">Register</Link>
+          </div>
+        </div>
       </nav>
-      <div className="content">
-        <h1>Discover your next great adventure, become an explorer to get started!</h1>
-        <form onSubmit={handleSubmit} className="search-form">
-          <input
-            type='search'
-            placeholder="Search for your destination"
-            value={searchQuery}
-            onChange={handleSearchChange}
-          />
-          <button type="submit">Search</button>
-        </form>
-        {/* <div className="filter-options">
-          <form onSubmit={handleFilterSubmit}>
+      <div className="container content-container">
+        <div className="content">
+          <h1 className="mb-5">Discover your next great adventure, become an explorer to get started!</h1>
+          <form onSubmit={handleSubmit} className="d-flex">
             <input
-              type="number"
-              placeholder="Min Price"
-              value={minPrice}
-              onChange={(e) => setMinPrice(e.target.value)}
+              className="form-control me-2"
+              type="search"
+              placeholder="Search for your destination"
+              value={searchQuery}
+              onChange={handleSearchChange}
             />
-            <input
-              type="number"
-              placeholder="Max Price"
-              value={maxPrice}
-              onChange={(e) => setMaxPrice(e.target.value)}
-            />
-            <input
-              type="date"
-              value={maxDate}
-              onChange={(e) => setMaxDate(e.target.value)}
-            />
-            <button type="submit">Apply Filters</button>
+            <button className="btn btn-primary" type="submit">Search</button>
           </form>
-        </div> */}
+        </div>
       </div>
     </div>
   );
