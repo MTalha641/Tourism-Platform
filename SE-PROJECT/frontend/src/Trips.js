@@ -10,6 +10,17 @@ const Trips = () => {
   const [isLoading, setIsLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
 
+  // const handleSubmit = () => {
+  //   seats = trips.seats
+  //   userid = user.di
+    
+    if (!searchQuery.trim()) {
+      alert("Please enter a destination");
+      return;
+    }
+    navigate(`/search?key=${encodeURIComponent(searchQuery)}`);
+  };
+
   const formatDate = (dateString) => {
     // Format the date string to a more readable format
     const date = new Date(dateString); // Convert to Date object
@@ -59,6 +70,7 @@ const Trips = () => {
               <span><strong>Date:</strong> {trip.date}</span>
               {/* <span><strong>Duration:</strong> {trip.duration}</span> */}
               <span><strong>Starting from:</strong> Rs. {trip.price} per person</span>
+              <span><strong>Starting from:</strong> Rs. {trip._id} per person</span>
             </div>
             {/* <div className="trip-info">
               <p><strong>Starting Location:</strong> {trip.startingLocation}</p>
@@ -73,6 +85,6 @@ const Trips = () => {
       ))}
     </div>
   );
-};
+
 
 export default Trips;

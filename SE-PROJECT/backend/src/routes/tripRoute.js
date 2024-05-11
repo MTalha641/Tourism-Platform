@@ -4,6 +4,7 @@ import multer from 'multer'
 import path from 'path'
 import dotenv from 'dotenv'
 import mongoose from 'mongoose'
+import Trip from '../models/tripModel.js';
 import { stringify } from 'querystring'
 
 const tripRoute = express.Router()
@@ -15,15 +16,15 @@ dotenv.config()
 
 const mongoUri = process.env.MONGO_URI;
 
-const tripSchema = new mongoose.Schema({
-    image: { url: String, alt: String },
-    description: String,
-    price: Number,
-    date: Date,
-    destination: String
-});
-tripSchema.index({ destination: 'text' });
-const Trip = mongoose.model('Trip',tripSchema)
+// const tripSchema = new mongoose.Schema({
+//     image: { url: String, alt: String },
+//     description: String,
+//     price: Number,
+//     date: Date,
+//     destination: String
+// });
+// tripSchema.index({ destination: 'text' });
+// const Trip = mongoose.model('Trip',tripSchema)
 
 mongoose.connect(mongoUri)
 

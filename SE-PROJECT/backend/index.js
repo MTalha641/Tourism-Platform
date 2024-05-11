@@ -5,7 +5,8 @@ import asyncHandler from 'express-async-handler'
 import dotenv from 'dotenv'
 //import tripRoute from '../routes/tripRoute.js'
 import tripRoute from './src/routes/tripRoute.js';
-import userRoute from './src/routes/userRoute.js'
+import userRoute from './src/routes/userRoute.js';
+import bookRoute from './src/routes/bookRoute.js'
 import bodyParser from 'body-parser';
 
 dotenv.config()
@@ -32,6 +33,7 @@ mongoose.connection.on('error', (err) => {
 });
 app.use('/api/trips',tripRoute)
 app.use('/api/users',userRoute)
+app.use('/api/book',bookRoute)
 
 
 
