@@ -9,6 +9,7 @@ const Trips = () => {
   const [error, setError] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState(null);
+  const [token, setToken] = useState(null);
   const navigate = useNavigate();
 
   const formatDate = (dateString) => {
@@ -19,24 +20,19 @@ const Trips = () => {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    console.log('Token:', token);
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
-    if (token) {
-      axios.get('http://localhost:8081/api/users/me', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then(response => {
-        setIsLoggedIn(true);
-        setUserId(response.data._id);
-      })
-      .catch(error => {
-        console.error('Error fetching user ID:', error);
-      });
+    if (token && userInfo) {
+      setIsLoggedIn(true);
+      setUserId(userInfo.user_Id); // Assuming user ID is stored as 'userId' in token
+      setToken(token);
     }
 
-    axios.get('http://localhost:8081/api/trips')
+    axios.get('http://localhost:8081/api/trips', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
       .then(async (response) => {
         const formattedTrips = await Promise.all(response.data.map(async (trip) => {
           const formattedTrip = {
@@ -44,10 +40,18 @@ const Trips = () => {
             date: formatDate(trip.date),
           };
 
-          const userResponse = await axios.get(`http://localhost:8081/api/book/${trip.destination}/userID`);
+          const userResponse = await axios.get(`http://localhost:8081/api/book/${trip.destination}/userID`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
           formattedTrip.userId = userResponse.data.user_id;
 
-          const tripResponse = await axios.get(`http://localhost:8081/api/book/${trip.destination}/tripID`);
+          const tripResponse = await axios.get(`http://localhost:8081/api/book/${trip.destination}/tripID`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
           formattedTrip.tripId = tripResponse.data.trip_id;
 
           return formattedTrip;
@@ -60,7 +64,7 @@ const Trips = () => {
         setError(err.message);
         setIsLoading(false);
       });
-  }, []);
+  }, [token]);
 
   const handleBookTrip = async (tripId) => {
     if (!isLoggedIn) {
@@ -68,20 +72,28 @@ const Trips = () => {
       return;
     }
 
-    if (!userId) {
-      console.error("User ID not available");
-      return;
-    }
-
     try {
-      await axios.post('http://localhost:8081/api/book/bookings', {
+      const response = await axios.post('http://localhost:8081/api/book/booking', {
         trip_id: tripId,
-        user_id: userId,
+        user_id: userId, // Use the extracted user ID
         seats_booked: 1
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       });
-      alert('Booking successful!');
+
+      console.log("Booking response:", response);
+
+      if (response.status === 201) {
+        alert('Booking successful!');
+      } else {
+        console.error('Booking failed with status:', response.status);
+        alert('Booking failed. Please try again later.');
+      }
     } catch (error) {
       console.error('Booking error:', error);
+      alert('Booking failed. Please try again later.');
     }
   };
 
@@ -112,7 +124,7 @@ const Trips = () => {
               <span><strong>ID:</strong> {trip._id}</span>
             </div>
             <div className="booking-section">
-              {isLoggedIn && userId ? (
+              {isLoggedIn ? (
                 <button className="book-now" onClick={() => handleBookTrip(trip.tripId)}>BOOK NOW</button>
               ) : (
                 <button onClick={() => navigate('/login')}>Login to Book</button>

@@ -7,6 +7,7 @@ import jwt from 'jsonwebtoken';
 import Trip from '../models/tripModel.js';
 import Booking from '../models/bookModel.js';
 import User from '../models/userModel.js'
+import authMiddleware from '../middleware/authMiddleware.js'
 const bookRoute = express.Router();
 bookRoute.use(express.json());
 bookRoute.use(cors());
@@ -57,46 +58,64 @@ bookRoute.get('/:destination/tripID', async (req, res) => {
 });
 
 
-bookRoute.post('/bookings', async (req, res) => {
-    console.log('Request Body:', req.body); // Log the request body
-    const { trip_id, user_id, seats_booked } = req.body;
-  
-    try {
-      // Find the trip
-      const trip = await Trip.findById(trip_id);
-      if (!trip) {
-        return res.status(404).json({ error: 'Trip not found', trip_id });
-      }
-  
-      // Check if enough seats available
-      if (trip.capacity - trip.booked_seats < seats_booked) {
-        return res.status(400).json({ error: 'Not enough seats available', trip_id });
-      }
-  
-      // Calculate total price
-      const total_price = trip.price * seats_booked;
-  
-      // Create new booking
-      const booking = new Booking({
-        trip: trip_id,
-        user_id,
-        seats_booked,
-        total_price
-      });
-  
-      // Save booking
-      await booking.save();
-  
-      // Update trip's booked seats
-      trip.booked_seats += seats_booked;
-      await trip.save();
-  
-      res.status(201).json(booking);
-    } catch (error) {
-      console.error('Error:', error);
-      res.status(500).json({ error: 'Server error' });
-    }
-});
+// const extractUserId = (req) => {
+//   const authorizationHeader = req.headers.authorization;
+//   const token = authorizationHeader ? authorizationHeader.split(' ')[1] : null;
+//   if (token) {
+//     try {
+//       const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+//       console.log('Decoded Token:', decodedToken); // Log the decoded token
+//       return decodedToken.userId;
+//     } catch (error) {
+//       console.error('Token Error:', error); // Log token decoding errors
+//       return null; // Invalid token
+//     }
+//   }
+//   console.log('No Token Provided'); // Log when no token is provided
+//   return null; // No token provided
+// };
 
+bookRoute.post('/bookings', authMiddleware, async (req, res) => {
+  try {
+    const { tripId, seatsBooked } = req.body; // Make sure property names are properly formatted
+    const userId = req.userId; // Extract user ID from the authenticated request
+    console.log(tripId,seatsBooked,userId)
+    
+    // Find the trip
+    const trip = await Trip.findById(tripId);
+    if (!trip) {
+      return res.status(404).json({ error: 'Trip not found', tripId });
+    }
+
+    // Check if enough seats available
+    if (trip.capacity - trip.bookedSeats < seatsBooked) {
+      return res.status(400).json({ error: 'Not enough seats available', tripId });
+    }
+
+    // Calculate total price
+    const totalPrice = trip.price * seatsBooked;
+
+    // Create new booking
+    const booking = new Booking({
+      trip: tripId,
+      user: userId,
+      seatsBooked,
+      totalPrice
+    });
+
+    // Save booking
+    await booking.save();
+
+    // Update trip's booked seats
+    trip.bookedSeats += seatsBooked;
+    await trip.save();
+
+    // Send success response with booking and message
+    res.status(201).json({ booking, message: 'Booking successful' });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
 
   export default bookRoute;

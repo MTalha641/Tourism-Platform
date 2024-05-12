@@ -52,41 +52,71 @@ mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true })
         }
     });
 
+    // userRoute.post('/login', async (req, res) => {
+    //     const { email, password } = req.body;
+    
+    //     try {
+    //         // Check if user with given email exists
+    //         const user = await User.findOne({ email });
+    
+    //         if (!user) {
+    //             return res.status(400).json({ message: 'Invalid email or password' });
+    //         }
+    
+    //         // Check if password is correct (compare plain text passwords)
+    //         if (user.password !== password) {
+    //             return res.status(400).json({ message: 'Invalid email or password' });
+    //         }
+
+    //         else {
+    //             console.log("Login Successful")
+    //         }
+    
+    //         // If email and password are correct, send user details in response
+    //         res.status(200).json({
+    //             user: {
+    //                 _id: user._id,
+    //                 name: user.name,
+    //                 email: user.email,
+    //                 // Add any other user details you want to send
+    //             }
+    //         });
+    //     } catch (error) {
+    //         console.error('Login error:', error);
+    //         res.status(500).json({ message: 'Server error' });
+    //     }
+    // });
     userRoute.post('/login', async (req, res) => {
         const { email, password } = req.body;
-    
+      
         try {
-            // Check if user with given email exists
-            const user = await User.findOne({ email });
-    
-            if (!user) {
-                return res.status(400).json({ message: 'Invalid email or password' });
+          // Check if user exists
+          const user = await User.findOne({ email });
+          if (!user || user.password !== password) {
+            return res.status(400).json({ message: 'Invalid credentials' });
+          }
+      
+          // Create and send token
+          const token = jwt.sign(
+            { userId: user._id },
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' } // token expiration time
+          );
+      
+          res.json({
+            token,
+            user: {
+              _id: user._id,
+              name: user.name,
+              email: user.email
+              // add any other user data you want to send
             }
-    
-            // Check if password is correct (compare plain text passwords)
-            if (user.password !== password) {
-                return res.status(400).json({ message: 'Invalid email or password' });
-            }
-
-            else {
-                console.log("Login Successful")
-            }
-    
-            // If email and password are correct, send user details in response
-            res.status(200).json({
-                user: {
-                    _id: user._id,
-                    name: user.name,
-                    email: user.email,
-                    // Add any other user details you want to send
-                }
-            });
+          });
         } catch (error) {
-            console.error('Login error:', error);
-            res.status(500).json({ message: 'Server error' });
+          console.error(error);
+          res.status(500).json({ message: 'Server error' });
         }
-    });
-
+      });
     userRoute.get('/me', authMiddleware, async (req, res) => {
         try {
           // Get user ID from the request object
