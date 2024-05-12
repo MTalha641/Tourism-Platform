@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { login, logout } from "../Redux/Actions/userActions";
+import { login } from "../Redux/Actions/userActions";
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
 
 const Login = () => {
@@ -16,16 +16,16 @@ const Login = () => {
   const dispatch = useDispatch();
 
   const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo, error } = userLogin;
+  const { error } = userLogin;
 
-  const logoutHandler = () => {
-    dispatch(logout());
-  };
-
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-    dispatch(login(email, password));
-    setShowSuccessMessage(true);
+    await dispatch(login(email, password));
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    if (isLoggedIn) {
+      setShowSuccessMessage(true);
+      navigate(redirect); // Redirect to the intended page after successful login
+    }
   };
 
   return (
@@ -35,50 +35,6 @@ const Login = () => {
           <Link className="navbar-brand" to="/">
             Your Logo
           </Link>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav ms-auto">
-              <li className="nav-item">
-                <Link className="nav-link" to="/">
-                  Home
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/about">
-                  About
-                </Link>
-              </li>
-              {userInfo ? (
-                <li className="nav-item">
-                  <button
-                    className="btn btn-outline-danger"
-                    onClick={logoutHandler}
-                  >
-                    Logout
-                  </button>
-                </li>
-              ) : (
-                <li className="nav-item">
-                  <Link
-                    className="nav-link"
-                    to={redirect ? `/register?redirect=${redirect}` : "/register"}
-                  >
-                    Register
-                  </Link>
-                </li>
-              )}
-            </ul>
-          </div>
         </div>
       </nav>
       <div className="row justify-content-center align-items-center h-100">

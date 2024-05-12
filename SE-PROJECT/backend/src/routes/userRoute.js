@@ -4,6 +4,8 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import User from '../models/userModel.js';
+import authMiddleware from '../middleware/authMiddleware.js';
 const userRoute = express.Router();
 userRoute.use(express.json());
 userRoute.use(cors());
@@ -11,16 +13,16 @@ dotenv.config();
 
 const mongoUri = process.env.MONGO_URI;
 
-const userSchema = new mongoose.Schema({
-    name: String,
-    email: String,
-    password: String,
-    ph_num: Number,
-    address: String,
-    city: String
-});
+// const userSchema = new mongoose.Schema({
+//     name: String,
+//     email: String,
+//     password: String,
+//     ph_num: Number,
+//     address: String,
+//     city: String
+// });
 
-const User = mongoose.model('User', userSchema);
+// const User = mongoose.model('User', userSchema);
 
 mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('MongoDB connected'))
@@ -84,4 +86,24 @@ mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true })
             res.status(500).json({ message: 'Server error' });
         }
     });
+
+    userRoute.get('/me', authMiddleware, async (req, res) => {
+        try {
+          // Get user ID from the request object
+          const userId = req.userId;
+      
+          // Find user by ID
+          const user = await User.findById(userId);
+      
+          if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+          }
+      
+          // Send user details in response
+          res.json(user);
+        } catch (error) {
+          console.error(error.message);
+          res.status(500).send('Server Error');
+        }
+      });
 export default userRoute;
