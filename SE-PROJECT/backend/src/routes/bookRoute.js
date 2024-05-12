@@ -74,40 +74,42 @@ bookRoute.get('/:destination/tripID', async (req, res) => {
 //   console.log('No Token Provided'); // Log when no token is provided
 //   return null; // No token provided
 // };
+// bookRoute.post('/bookings', authMiddleware, async (req, res) => {
 
-bookRoute.post('/bookings', authMiddleware, async (req, res) => {
+bookRoute.post('/bookings', async (req, res) => {
   try {
-    const { tripId, seatsBooked } = req.body; // Make sure property names are properly formatted
-    const userId = req.userId; // Extract user ID from the authenticated request
-    console.log(tripId,seatsBooked,userId)
+    const { user_id,trip_id, seats_booked } = req.body; // Make sure property names are properly formatted
+    const userId = user_id; // Extract user ID from the authenticated request
+    console.log(trip_id,seats_booked,userId)
     
     // Find the trip
-    const trip = await Trip.findById(tripId);
+    const trip = await Trip.findById(trip_id);
     if (!trip) {
       return res.status(404).json({ error: 'Trip not found', tripId });
     }
+    console.log(trip.price);
 
     // Check if enough seats available
-    if (trip.capacity - trip.bookedSeats < seatsBooked) {
-      return res.status(400).json({ error: 'Not enough seats available', tripId });
+    if (trip.capacity - trip.booked_seats < seats_booked) {
+      return res.status(400).json({ error: 'Not enough seats available', trip_id });
     }
 
     // Calculate total price
-    const totalPrice = trip.price * seatsBooked;
+    const totalPrice = trip.price * seats_booked;
 
     // Create new booking
     const booking = new Booking({
-      trip: tripId,
-      user: userId,
-      seatsBooked,
-      totalPrice
+      trip: trip_id,
+      user_id: userId,
+      seats_booked : seats_booked,
+      total_price : totalPrice
     });
 
     // Save booking
     await booking.save();
 
     // Update trip's booked seats
-    trip.bookedSeats += seatsBooked;
+    trip.booked_seats += seats_booked;
     await trip.save();
 
     // Send success response with booking and message

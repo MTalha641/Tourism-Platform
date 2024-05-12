@@ -26,7 +26,7 @@ export const login = (email, password) => async (dispatch) => {
       config
     );
 
-    console.log("Token:", data.token); // Log the token
+    console.log("Token:", data.token,data.user); // Log the token
 
     dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
 

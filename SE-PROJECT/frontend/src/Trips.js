@@ -21,10 +21,11 @@ const Trips = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-
+    console.log(userInfo)
+    console.log(token)
     if (token && userInfo) {
       setIsLoggedIn(true);
-      setUserId(userInfo.user_Id); // Assuming user ID is stored as 'userId' in token
+      setUserId(userInfo.user._id); // Assuming user ID is stored as 'userId' in token
       setToken(token);
     }
 
@@ -73,9 +74,11 @@ const Trips = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:8081/api/book/booking', {
+      console.log(userId)
+      const response = await axios.post('http://localhost:8081/api/book/bookings', {
+        user_id: userId,
         trip_id: tripId,
-        user_id: userId, // Use the extracted user ID
+         // Use the extracted user ID
         seats_booked: 1
       }, {
         headers: {
@@ -122,10 +125,11 @@ const Trips = () => {
               <span><strong>Date:</strong> {trip.date}</span>
               <span><strong>Starting from:</strong> Rs. {trip.price} per person</span>
               <span><strong>ID:</strong> {trip._id}</span>
+              <span><strong>ID:</strong> {userId}</span>
             </div>
             <div className="booking-section">
               {isLoggedIn ? (
-                <button className="book-now" onClick={() => handleBookTrip(trip.tripId)}>BOOK NOW</button>
+                <button className="book-now" onClick={() => handleBookTrip(trip._id)}>BOOK NOW</button>
               ) : (
                 <button onClick={() => navigate('/login')}>Login to Book</button>
               )}
