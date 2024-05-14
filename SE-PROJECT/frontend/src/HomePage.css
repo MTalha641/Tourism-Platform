@@ -9,5 +9,14 @@
 .welcome-text {
   font-size: 3em; /* Font size */
   font-weight: bold; /* Font weight */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Text shadow for better visibility */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Text shadow for better
+  visibility */
+  color: black;
+}
+.p-text {
+  font-size: 3em; /* Font size */
+  font-weight: bold; /* Font weight */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Text shadow for better
+  visibility */
+  color: black;
 }
