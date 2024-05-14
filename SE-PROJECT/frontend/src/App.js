@@ -18,13 +18,13 @@ import UserDashboard from  './components/UserDashboard.js';
 import Dashboard from  './components/Dashboard.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from '../src/components/Header.js'
-
+import Home from './home.js';
 const App = () => {
   return (
     <><Router>
       <Header />
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<Home />} />
         <Route path="/explore-pakistan" element={<ExplorePakistan />} />
         <Route path="/saif-ul-malook" element={<SaifUlMalook />} />
         <Route path="/attabad-lake" element={<Attabad />} />

@@ -1,8 +1,8 @@
 .homepage-background {
   position: relative;
   text-align: center;
-  color: white; /* Text color */
-  padding-top: 150px; /* Adjust this value to position the text */
+  color: rgb(0, 0, 0); /* Text color */
+  padding-top: 30px; /* Adjust this value to position the text */
   background-size: cover; /* Ensure image covers entire container */
 }
 
