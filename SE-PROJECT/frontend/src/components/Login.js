@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { login, logout } from "../Redux/Actions/userActions";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const Navbar = ({ isLoggedIn, handleLogout }) => {
+const Navbar = ({ isLoggedIn, handleLogout, isAdmin }) => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container">
@@ -31,16 +31,14 @@ const Navbar = ({ isLoggedIn, handleLogout }) => {
           </ul>
           {isLoggedIn && (
             <div>
-              <button
-                className="btn btn-danger ml-3"
-                onClick={handleLogout}
-              >
+              <button className="btn btn-danger ml-3" onClick={handleLogout}>
                 Logout
               </button>
-              {/* Admin Panel Button */}
-              <Link to="/admin-dashboard">
-                <button className="btn btn-primary ml-3">Admin Panel</button>
-              </Link>
+              {isAdmin && (
+                <Link to="/admin-dashboard">
+                  <button className="btn btn-primary ml-3">Admin Panel</button>
+                </Link>
+              )}
             </div>
           )}
         </div>
@@ -52,7 +50,7 @@ const Navbar = ({ isLoggedIn, handleLogout }) => {
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("admin"); // Default to "admin"
+  const [role, setRole] = useState("");
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -72,9 +70,9 @@ const Login = () => {
         navigate(redirect);
       } else {
         if (userInfo.role === "admin") {
-          navigate("/admin-dashboard"); // Corrected path
+          navigate("/admin-dashboard");
         } else {
-          navigate("/user-dashboard"); // Corrected path
+          navigate("/user-dashboard");
         }
       }
     } else {
@@ -94,7 +92,7 @@ const Login = () => {
   return (
     <div>
       <div className="container-fluid bg-light">
-        <Navbar isLoggedIn={!!userInfo} handleLogout={handleLogout} />
+        <Navbar isLoggedIn={!!userInfo} handleLogout={handleLogout} isAdmin={userInfo && userInfo.role === "admin"} />
         <div className="row justify-content-center align-items-center h-100">
           <div className="col-md-8 col-lg-4">
             <div className="card shadow mt-5">
@@ -141,10 +139,20 @@ const Login = () => {
                   </button>
                 </form>
                 <p className="mt-3 text-center">
+                  Already have an account?{" "}
+                  <Link
+                    to="/login"
+                  >
+                    Login
+                  </Link>
+                </p>
+                <p className="mt-3 text-center">
                   Don't have an account?{" "}
                   <Link
                     to={
-                      redirect ? `/register?redirect=${redirect}` : "/register"
+                      redirect
+                        ? `/register?redirect=${redirect}`
+                        : "/register"
                     }
                   >
                     Register
