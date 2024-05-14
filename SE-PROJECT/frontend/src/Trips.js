@@ -112,7 +112,6 @@ const Trips = () => {
 
   return (
     <>
-      <Header />
       <div className="container mt-4">
         <div className="row">
           {trips.map((trip, index) => (

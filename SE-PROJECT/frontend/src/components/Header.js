@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import { HiMenuAlt3 } from 'react-icons/hi';
 import { MdClose } from 'react-icons/md';
+import {useNavigate} from 'react-router-dom'
 
 export default function Header() {
     const [dropDown, setDropDown] = useState(false);
     const isLoggedIn = checkLoggedIn(); // You need to implement this function
-
-    const toggleDropDown = () => {
-        setDropDown(!dropDown);
-    }
+    const [searchQuery, setSearchQuery] = useState("");
+    const navigate = useNavigate();
+    function toggleDropDown() {
+    setDropDown(!dropDown);
+  }
 
     const handleSignOut = (e) => {
         e.preventDefault();
@@ -22,6 +24,20 @@ export default function Header() {
         // Return true if logged in, false otherwise
         return localStorage.getItem('userInfo');
     }
+    
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!searchQuery.trim()) {
+      alert("Please enter a destination");
+      return;
+    }
+    navigate(`/search?key=${encodeURIComponent(searchQuery)}`);
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
 
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-white shadow sticky-top">
@@ -34,6 +50,16 @@ export default function Header() {
                     {dropDown ? <MdClose /> : <HiMenuAlt3 />}
                 </button>
                 <div className={"collapse navbar-collapse" + (dropDown ? " show" : "")}>
+                <form onSubmit={handleSubmit} className="d-flex align-items-centre">
+                  <input
+                   className="form-control me-2"
+                   type="search"
+                  placeholder="Search for your destination"
+                   value={searchQuery}
+                   onChange={handleSearchChange}
+                  />
+                 <button className="btn btn-primary" type="submit">Search</button>
+                </form>                 
                     <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li className="nav-item">
                             <a className="nav-link active" href="/">Home</a>

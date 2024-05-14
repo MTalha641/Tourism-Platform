@@ -16,11 +16,13 @@ import Register from './components/Register.js';
 import AdminDashboard from './components/AdminDashboard.js';
 import UserDashboard from  './components/UserDashboard.js';
 import Dashboard from  './components/Dashboard.js';
- import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Header from '../src/components/Header.js'
 
 const App = () => {
   return (
-    <Router>
+    <><Router>
+      <Header />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/explore-pakistan" element={<ExplorePakistan />} />
@@ -31,15 +33,15 @@ const App = () => {
         <Route path="/hunza" element={<Hunza />} /> {/* Add new route for Trips */}
         <Route path="/kpk" element={<KPK />} /> {/* Add new route for Trips */}
         <Route path="/kashmir" element={<Kashmir />} /> {/* Add new route for Trips */}
-        <Route path = "/search" element= {<Search/>}> </Route>
+        <Route path="/search" element={<Search />}> </Route>
         <Route path="*" element={<LakesSection />} /> {/* Wildcard route for unknown paths */}
         <Route path="/login" element={<Login />} /> {/* Add new route for Trips */}
-        <Route path="/register" element={<Register/>} /> {/* Add new route for Trips */}
-        <Route path="/admin-dashboard" element={<AdminDashboard/>} />
-        <Route path="/user-dashboard" element={<UserDashboard/>} />  
-        <Route path="/dashboard" element={<Dashboard/>} />  
+        <Route path="/register" element={<Register />} /> {/* Add new route for Trips */}
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/user-dashboard" element={<UserDashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
-    </Router>
+    </Router></>
   );
 };
 
