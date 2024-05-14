@@ -3,21 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import './HomePage.css'; // Import a CSS file for styling
 
 const Home = () => {
-  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!searchQuery.trim()) {
-      alert("Please enter a destination");
-      return;
-    }
-    navigate(`/search?key=${encodeURIComponent(searchQuery)}`);
-  };
-
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
-  };
 
   return (
     <div className="container-fluid homepage-background">
@@ -35,16 +22,16 @@ const Home = () => {
           
           {/* Destination Highlights */}
           <div className="destination-highlights row">
-            <h2 className="col-12">Popular Destinations</h2>
+            <h2 className="col-12 welcome-text">Popular Destinations</h2>
             <div className="destination-card col-lg-4 mb-4">
               <img className="img-fluid" src="destination-image-1.jpg" alt="Destination 1" />
               <h3>Destination 1</h3>
-              <p className="card-text">Description of destination 1.</p>
+              <p className="card-text p-text">Description of destination 1.</p>
             </div>
             <div className="destination-card col-lg-4 mb-4">
               <img className="img-fluid" src="destination-image-2.jpg" alt="Destination 2" />
               <h3>Destination 2</h3>
-              <p className="card-text">Description of destination 2.</p>
+              <p className="card-text p-text">Description of destination 2.</p>
             </div>
             {/* Add more destination cards as needed */}
           </div>
