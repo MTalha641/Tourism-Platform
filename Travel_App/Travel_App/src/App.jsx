@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
 import Footer from './components/Footer'
 import Navbar from './components/Navbar'
+import NotFound from './components/NotFound'
 import Home from './pages/Home'
 import Tours from './pages/Tours'
 import BlogPage from './pages/BlogPage'
@@ -16,7 +17,7 @@ import ViewBookedTour from './pages/ViewBookedTour'
 function App() {
 
   console.log('came first')
-  const email = localStorage.getItem('email');
+  const email = localStorage.getItem('userInfo');
 
   return (
     <>
@@ -35,6 +36,7 @@ function App() {
               <Route path='/checkout' element={<Checkout />} />
               <Route path='/pay' element={<Payment />} />
               <Route path='/signup' element={<SignUp />} />
+              {/* <Route path='/*' element={<NotFound />} /> */}
             </Routes>
           </BrowserRouter>
           <Footer />
@@ -43,10 +45,9 @@ function App() {
         
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<SignIn />} />
           <Route path='/signin' element={<SignIn />} />
           <Route path='/signup' element={<SignUp />} />
-          <Route path='/*' element={<SignIn />} />
+          {/* <Route path='/*' element={<NotFound />} /> */}
         </Routes>
       </BrowserRouter>
 
