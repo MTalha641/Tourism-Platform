@@ -30,12 +30,18 @@ const Navbar = ({ isLoggedIn, handleLogout }) => {
             </li>
           </ul>
           {isLoggedIn && (
-            <button
-              className="btn btn-danger ml-3"
-              onClick={handleLogout}
-            >
-              Logout
-            </button>
+            <div>
+              <button
+                className="btn btn-danger ml-3"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
+              {/* Admin Panel Button */}
+              <Link to="/admin-dashboard">
+                <button className="btn btn-primary ml-3">Admin Panel</button>
+              </Link>
+            </div>
           )}
         </div>
       </div>
@@ -46,42 +52,32 @@ const Navbar = ({ isLoggedIn, handleLogout }) => {
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [role, setRole] = useState("admin"); // Default to "admin"
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const redirect = location.search ? location.search.split("=")[1] : "/";
+  const redirect = new URLSearchParams(location.search).get("redirect");
 
   // Fetch userLogin from Redux store
   const userLogin = useSelector((state) => state.userLogin);
   const { error, userInfo } = userLogin;
 
-  // Check if there is a token, if yes, user is logged in
-  useEffect(() => {
-    const isLoggedIn = localStorage.getItem("isLoggedIn");
-    if (isLoggedIn && userInfo) {
-      setShowSuccessMessage(true);
-      setShowErrorMessage(false);
-      localStorage.setItem("isLoggedIn", true);
-      localStorage.setItem("userInfo", JSON.stringify(userInfo));
-      navigate(redirect);
-    }
-  }, [userInfo, navigate, redirect]);
-
   // Submit login form
   const submitHandler = async (e) => {
     e.preventDefault();
-    await dispatch(login(email, password));
-    const isLoggedIn = localStorage.getItem("isLoggedIn");
-  
-    // Check if isLoggedIn is true and userInfo is available in localStorage
-    if (isLoggedIn && localStorage.getItem('userInfo')) {
-      setShowSuccessMessage(true);
-      setShowErrorMessage(false);
-      navigate(redirect);
+    await dispatch(login(email, password, role));
+    if (!error && userInfo) {
+      if (redirect) {
+        navigate(redirect);
+      } else {
+        if (userInfo.role === "admin") {
+          navigate("/admin-dashboard"); // Corrected path
+        } else {
+          navigate("/user-dashboard"); // Corrected path
+        }
+      }
     } else {
-      setShowSuccessMessage(false);
       setShowErrorMessage(true);
     }
   };
@@ -109,11 +105,6 @@ const Login = () => {
                     {error}
                   </div>
                 )}
-                {showSuccessMessage && (
-                  <div className="alert alert-success" role="alert">
-                    Login successful!
-                  </div>
-                )}
                 <form onSubmit={submitHandler}>
                   <div className="form-group">
                     <input
@@ -131,6 +122,15 @@ const Login = () => {
                       placeholder="Password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Role (admin or user)"
+                      value={role}
+                      onChange={(e) => setRole(e.target.value)}
                     />
                   </div>
                   <button

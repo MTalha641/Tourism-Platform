@@ -29,29 +29,40 @@ mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true })
     .catch(err => console.error('MongoDB connection error:', err));
 
     userRoute.post('/register', async (req, res) => {
-        try {
-            console.log('Request body:', req.body); // Log request body
-            const { name, email, password, ph_num, address, city } = req.body;
-    
-            const newUser = new User({
-                name: name,
-                email: email,
-                password: password,
-                ph_num: ph_num,
-                address: address,
-                city: city,
-            });
-    
-            const savedUser = await newUser.save();
-            console.log('Saved user:', savedUser); // Log saved user
-    
-            res.status(201).json({ message: 'User registration successful', userId: savedUser._id });
-        } catch (err) {
-            console.error('Error during registration:', err); // Log error
-            res.status(500).json({ error: err.message });
-        }
-    });
-
+      try {
+          const { name, email, password, ph_num, address, city, role } = req.body;
+  
+          // Check if all required fields are present
+          // if (!name || !email || !password || !ph_num || !address || !city || !role) {
+          //     return res.status(400).json({ message: "All fields are required" });
+          // }
+  
+          // Check if the user already exists
+          const existingUser = await User.findOne({ email });
+          if (existingUser) {
+              return res.status(400).json({ message: "User already exists" });
+          }
+  
+          // Create a new user instance
+          const newUser = new User({
+              name,
+              email,
+              password,
+              ph_num,
+              address,
+              city,
+              role  // Save the role value
+          });
+  
+          // Save the new user to the database
+          await newUser.save();
+  
+          res.status(201).json({ message: "User registered successfully" });
+      } catch (error) {
+          console.error(error);
+          res.status(500).json({ message: "Server error" });
+      }
+  });
     // userRoute.post('/login', async (req, res) => {
     //     const { email, password } = req.body;
     
@@ -87,7 +98,7 @@ mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true })
     //     }
     // });
     userRoute.post('/login', async (req, res) => {
-        const { email, password } = req.body;
+        const { email, password ,role} = req.body;
       
         try {
           // Check if user exists
@@ -108,7 +119,8 @@ mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true })
             user: {
               _id: user._id,
               name: user.name,
-              email: user.email
+              email: user.email,
+              role:user.role
               // add any other user data you want to send
             }
           });
@@ -136,4 +148,41 @@ mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true })
           res.status(500).send('Server Error');
         }
       });
+
+      userRoute.get('/all', async (req, res) => {
+        try {
+          const users = await User.find();
+          res.json(users);
+        } catch (err) {
+          res.status(500).json({ message: err.message });
+        }
+      });
+
+      userRoute.get('/:id', async (req, res) => {
+        try {
+          const user = await User.findById(req.params.id);
+          if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+          }
+          res.json(user);
+        } catch (err) {
+          res.status(500).json({ message: err.message });
+        }
+      });
+      
+      userRoute.delete('/:id', async (req, res) => {
+        try {
+          const user = await User.findById(req.params.id);
+          if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+          }
+      
+          await user.deleteOne; // or user.deleteOne() if you prefer
+      
+          res.json({ message: 'User deleted' });
+        } catch (err) {
+          res.status(500).json({ message: err.message });
+        }
+      });
+      
 export default userRoute;

@@ -120,4 +120,32 @@ bookRoute.post('/bookings', async (req, res) => {
   }
 });
 
+bookRoute.get('/all', async (req, res) => {
+  try {
+    const bookings = await Booking.find();
+    res.json(bookings);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+bookRoute.delete('/:id', async (req, res) => {
+  try {
+    const booking = await Booking.findById(req.params.id);
+    if (!booking) {
+      return res.status(404).json({ message: 'Booking not found' });
+    }
+
+    // Update trip's booked seats
+    const trip = await Trip.findById(booking.trip);
+    trip.booked_seats -= booking.seats_booked;
+    await trip.save();
+
+    await booking.deleteOne();
+    res.json({ message: 'Booking deleted' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
   export default bookRoute;

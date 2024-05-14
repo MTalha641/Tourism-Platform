@@ -7,6 +7,7 @@ import {thunk} from "redux-thunk";
 import {
   userLoginReducer,
   userRegisterReducer,
+  userRoleReducer,
 } from "./Reducers/userReducers";
 // import {
 //   orderCreateReducer,

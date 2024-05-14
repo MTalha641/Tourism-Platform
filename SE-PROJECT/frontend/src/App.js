@@ -13,6 +13,9 @@ import Kashmir from './Kashmir';
 import Search from './components/Search.js'
 import Login from './components/Login.js';
 import Register from './components/Register.js';
+import AdminDashboard from './components/AdminDashboard.js';
+import UserDashboard from  './components/UserDashboard.js';
+import Dashboard from  './components/Dashboard.js';
  import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
@@ -32,6 +35,9 @@ const App = () => {
         <Route path="*" element={<LakesSection />} /> {/* Wildcard route for unknown paths */}
         <Route path="/login" element={<Login />} /> {/* Add new route for Trips */}
         <Route path="/register" element={<Register/>} /> {/* Add new route for Trips */}
+        <Route path="/admin-dashboard" element={<AdminDashboard/>} />
+        <Route path="/user-dashboard" element={<UserDashboard/>} />  
+        <Route path="/dashboard" element={<Dashboard/>} />  
       </Routes>
     </Router>
   );

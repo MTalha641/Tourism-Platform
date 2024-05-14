@@ -42,4 +42,5 @@ export const userRegisterReducer = (state = {}, action) => {
       default:
           return state;
   }
+  
 };

@@ -126,8 +126,40 @@ tripRoute.get('/searchdate', async (req, res) => {
   }
 });
 
+tripRoute.delete('/:id', async (req, res) => {
+    try {
+      const trip = await Trip.findById(req.params.id);
+      if (!trip) {
+        return res.status(404).json({ message: 'Trip not found' });
+      }
+  
+      await trip.deleteOne(); 
+      res.json({ message: 'Trip deleted' });
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  });
+
+  tripRoute.get('/all', async (req, res) => {
+    try {
+      const trips = await Trip.find();
+      res.json(trips);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  });
 
 
-
+  tripRoute.get('/:id', async (req, res) => {
+    try {
+      const trip = await Trip.findById(req.params.id);
+      if (!trip) {
+        return res.status(404).json({ message: 'Trip not found' });
+      }
+      res.json(trip);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  });
 
 export default tripRoute
