@@ -14,9 +14,19 @@
   color: black;
 }
 .p-text {
-  font-size: 3em; /* Font size */
+  font-size: 1em; /* Font size */
   font-weight: bold; /* Font weight */
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Text shadow for better
   visibility */
   color: black;
 }
+.card-fixed-size {
+  width: 250px; /* Adjust the width as needed */
+  height: 300px; /* Adjust the height as needed */
+}
+
+.card-fixed-size .card-img-top {
+  height: 150px; /* Adjust the image height as needed */
+  object-fit: cover;
+}
+
