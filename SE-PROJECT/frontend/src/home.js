@@ -23,7 +23,7 @@ const Home = () => {
     <div className="container-fluid homepage-background">
       {/* Background image */}
       <h1 className="welcome-text display-4">Welcome to Pakistan</h1>
-          <h1 className="mb-5">Discover your next great adventure, become an explorer to get started!</h1>
+      <h1 className="mb-5">Discover your next great adventure, become an explorer to get started!</h1>
       <img
         className="background-image img-fluid"
         src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
@@ -47,6 +47,22 @@ const Home = () => {
               <p className="card-text">Description of destination 2.</p>
             </div>
             {/* Add more destination cards as needed */}
+          </div>
+          
+          {/* Our Recommendations */}
+          <div className="our-recommendations">
+            <h2>Our Recommendations</h2>
+            <div className="recommendation-card">
+              <img className="img-fluid" src="recommendation-image-1.jpg" alt="Recommendation 1" />
+              <h3>Recommendation 1</h3>
+              <p className="card-text">Description of recommendation 1.</p>
+            </div>
+            <div className="recommendation-card">
+              <img className="img-fluid" src="recommendation-image-2.jpg" alt="Recommendation 2" />
+              <h3>Recommendation 2</h3>
+              <p className="card-text">Description of recommendation 2.</p>
+            </div>
+            {/* Add more recommendation cards as needed */}
           </div>
           
           {/* Call to Action */}
