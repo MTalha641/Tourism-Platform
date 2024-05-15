@@ -68,10 +68,7 @@ export default function Header() {
                             <a className="nav-link" href="/trips">Tours</a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="/blog">Blog</a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="/contact">Contact</a>
+                            <a className="nav-link" href="/explore-pakistan">Explore Pakistan</a>
                         </li>
                         <li className="nav-item">
                             <a className="nav-link" href="/bookedtours">My Booking</a>

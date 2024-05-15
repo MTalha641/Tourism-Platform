@@ -28,7 +28,6 @@ const ExplorePakistan = () => {
           </div>
         </div>
       </nav> */}
-      <Header/>
       <div className="container">
         <h2 className="mt-4">Explore Pakistan</h2>
 

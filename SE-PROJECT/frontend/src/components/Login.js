@@ -8,9 +8,6 @@ const Navbar = ({ isLoggedIn, handleLogout, isAdmin }) => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container">
-        <Link className="navbar-brand" to="/">
-          Your Logo
-        </Link>
         <div className="ml-auto">
           <ul className="navbar-nav">
             <li className="nav-item">

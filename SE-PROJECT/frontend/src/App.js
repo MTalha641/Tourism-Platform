@@ -19,6 +19,7 @@ import Dashboard from  './components/Dashboard.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from '../src/components/Header.js'
 import Home from './home.js';
+import NotFound from '../src/components/NotFound.js'
 const App = () => {
   return (
     <><Router>
@@ -34,7 +35,7 @@ const App = () => {
         <Route path="/kpk" element={<KPK />} /> {/* Add new route for Trips */}
         <Route path="/kashmir" element={<Kashmir />} /> {/* Add new route for Trips */}
         <Route path="/search" element={<Search />}> </Route>
-        <Route path="*" element={<LakesSection />} /> {/* Wildcard route for unknown paths */}
+        <Route path="*" element={<NotFound />} /> {/* Wildcard route for unknown paths */}
         <Route path="/login" element={<Login />} /> {/* Add new route for Trips */}
         <Route path="/register" element={<Register />} /> {/* Add new route for Trips */}
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
