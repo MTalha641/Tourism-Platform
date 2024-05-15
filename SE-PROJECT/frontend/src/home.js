@@ -67,7 +67,7 @@ const Home = () => {
               )}
             </div>
           </div>
-
+          
           {/* Call to Action */}
           <div className="call-to-action justify-content-center"> {/* Center the call-to-action horizontally */}
             <h2>Plan Your Trip</h2>
