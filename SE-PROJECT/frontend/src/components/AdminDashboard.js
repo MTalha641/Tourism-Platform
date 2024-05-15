@@ -256,7 +256,7 @@ const AdminDashboard = () => {
                     <td>{trip.date}</td>
                     <td>{trip.price}</td>
                     <td>
-                      <button className="btn btn-danger mr-2" onClick={() => handleDeleteTrip(trip.id)}>Delete</button>
+                      <button className="btn btn-danger pd-4" onClick={() => handleDeleteTrip(trip.id)}>Delete</button>
                       <button className="btn btn-primary" onClick={handleViewTripDetails}>View Details</button>
                     </td>
                   </tr>

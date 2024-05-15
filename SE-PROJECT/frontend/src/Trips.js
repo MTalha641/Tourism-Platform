@@ -126,8 +126,8 @@ const Trips = () => {
                   <p className="card-text">
                     <strong>Date:</strong> {trip.date}<br/>
                     <strong>Starting from:</strong> Rs. {trip.price} per person<br/>
-                    <strong>ID:</strong> {trip._id}<br/>
-                    <strong>User ID:</strong> {userId}
+                    {/* <strong>ID:</strong> {trip._id}<br/> */}
+                    {/* <strong>User ID:</strong> {userId} */}
                   </p>
                 </div>
                 <div className="card-footer">
