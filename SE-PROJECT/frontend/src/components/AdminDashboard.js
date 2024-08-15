@@ -14,51 +14,50 @@ const AdminDashboard = () => {
   const token = localStorage.getItem('token');
 
   useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        const response = await axios.get('http://localhost:8081/api/book/all', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setBookings(response.data);
+      } catch (error) {
+        console.error('Error fetching bookings:', error);
+      }
+    };
+  
+    const fetchTrips = async () => {
+      try {
+        const response = await axios.get('http://localhost:8081/api/trips/all', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setTrips(response.data);
+      } catch (error) {
+        console.error('Error fetching trips:', error);
+      }
+    };
+  
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get('http://localhost:8081/api/users/all', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setUsers(response.data);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
     fetchBookings();
     fetchTrips();
     fetchUsers();
   }, [token]);
 
-  const fetchBookings = async () => {
-    try {
-      const response = await axios.get('http://localhost:8081/api/book/all', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      setBookings(response.data);
-    } catch (error) {
-      console.error('Error fetching bookings:', error);
-    }
-  };
-
-  const fetchTrips = async () => {
-    try {
-      const response = await axios.get('http://localhost:8081/api/trips/all', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      setTrips(response.data);
-    } catch (error) {
-      console.error('Error fetching trips:', error);
-    }
-  };
-
-  const fetchUsers = async () => {
-    try {
-      const response = await axios.get('http://localhost:8081/api/users/all', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      setUsers(response.data);
-    } catch (error) {
-      console.error('Error fetching users:', error);
-    }
-  };
-
-  const handleDeleteBooking = async () => {
+  const handleDeleteBooking = async (deleteBookingId) => {
     if (!deleteBookingId) {
       alert('Please enter a booking ID');
       return;
@@ -82,12 +81,13 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleDeleteTrip = async () => {
+  const handleDeleteTrip = async (deleteTripId) => {
     if (!deleteTripId) {
       alert('Please enter a trip ID');
       return;
     }
     try {
+      console.log(deleteTripId);
       const response = await fetch(`http://localhost:8081/api/trips/${deleteTripId}`, {
         method: 'DELETE',
         headers: {
@@ -98,7 +98,7 @@ const AdminDashboard = () => {
       if (!response.ok) {
         throw new Error('Failed to delete trip');
       }
-      setTrips(trips.filter(trip => trip.id !== deleteTripId));
+      setTrips(trips.filter(trip => trip._id !== deleteTripId));
       console.log(`Trip with id ${deleteTripId} deleted successfully`);
       setDeleteTripId('');
     } catch (error) {
@@ -106,29 +106,32 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleDeleteUser = async () => {
-    if (!deleteUserId) {
-      alert('Please enter a user ID');
-      return;
-    }
-    try {
-      const response = await fetch(`http://localhost:8081/api/users/${deleteUserId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        }
-      });
-      if (!response.ok) {
-        throw new Error('Failed to delete user');
+    const handleDeleteUser = async (deleteUserId) => {
+      if (!deleteUserId) {
+        alert('Please enter a user ID');
+        return;
       }
-      setUsers(users.filter(user => user.id !== deleteUserId));
-      console.log(`User with id ${deleteUserId} deleted successfully`);
-      setDeleteUserId('');
-    } catch (error) {
-      console.error('Error:', error.message);
-    }
-  };
+      try {
+        const response = await fetch(`http://localhost:8081/api/users/${deleteUserId}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          }
+        });
+        const data = await response.json();
+        console.log('Server response:', data);
+        if (!response.ok) {
+          throw new Error(data.message || 'Failed to delete user');
+        }
+        setUsers(users.filter(user => user._id !== deleteUserId));
+        console.log(`User with id ${deleteUserId} deleted successfully`);
+        setDeleteUserId('');
+      } catch (error) {
+        console.error('Error:', error.message);
+        alert(`Failed to delete user: ${error.message}`);
+      }
+    };
 
   const handleViewBookingDetails = async () => {
     try {
@@ -250,13 +253,13 @@ const AdminDashboard = () => {
               </thead>
               <tbody>
                 {trips.map(trip => (
-                  <tr key={trip.id}>
-                    <td>{trip.id}</td>
+                  <tr key={trip._id}>
+                    <td>{trip._id}</td>
                     <td>{trip.destination}</td>
                     <td>{trip.date}</td>
                     <td>{trip.price}</td>
                     <td>
-                      <button className="btn btn-danger pd-4" onClick={() => handleDeleteTrip(trip.id)}>Delete</button>
+                      <button className="btn btn-danger pd-4" onClick={() => handleDeleteTrip(trip._id)}>Delete</button>
                       <button className="btn btn-primary" onClick={handleViewTripDetails}>View Details</button>
                     </td>
                   </tr>
@@ -292,12 +295,12 @@ const AdminDashboard = () => {
               </thead>
               <tbody>
                 {users.map(user => (
-                  <tr key={user.id}>
-                    <td>{user.id}</td>
+                  <tr key={user._id}>
+                    <td>{user._id}</td>
                     <td>{user.name}</td>
                     <td>{user.email}</td>
                     <td>
-                      <button className="btn btn-danger mr-2" onClick={() => handleDeleteUser(user.id)}>Delete</button>
+                      <button className="btn btn-danger mr-2" onClick={() => handleDeleteUser(user._id)}>Delete</button>
                       <button className="btn btn-primary" onClick={handleViewUserDetails}>View Details</button>
                     </td>
                   </tr>
