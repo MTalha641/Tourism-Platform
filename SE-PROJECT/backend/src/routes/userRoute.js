@@ -172,18 +172,15 @@ mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true })
       
       userRoute.delete('/:id', async (req, res) => {
         try {
-          console.log('Attempting to delete user with ID:', req.params.id);
           const user = await User.findById(req.params.id);
-          console.log('Found user:', user);
           if (!user) {
-            console.log('User not found');
             return res.status(404).json({ message: 'User not found' });
           }
-          await user.deleteOne();
-          console.log('User deleted successfully');
+      
+          await user.deleteOne; // or user.deleteOne() if you prefer
+      
           res.json({ message: 'User deleted' });
         } catch (err) {
-          console.error('Error deleting user:', err);
           res.status(500).json({ message: err.message });
         }
       });

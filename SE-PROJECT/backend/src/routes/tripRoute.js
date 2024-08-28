@@ -129,7 +129,6 @@ tripRoute.get('/searchdate', async (req, res) => {
 tripRoute.delete('/:id', async (req, res) => {
     try {
       const trip = await Trip.findById(req.params.id);
-      console.log(trip);
       if (!trip) {
         return res.status(404).json({ message: 'Trip not found' });
       }

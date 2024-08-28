@@ -1,6 +1,6 @@
 // src/controllers/indexController.js
 
-import { client } from '../utils/mongoConnection';
+const { client } = require('../utils/mongoConnection');
 
 async function index(req, res) {
     try {
@@ -14,6 +14,6 @@ async function index(req, res) {
     }
 }
 
-export default {
+module.exports = {
     index
 };
