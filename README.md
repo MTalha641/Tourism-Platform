@@ -1,1 +1,1 @@
-Click on SE-PROJECT folder and the backend and frontend folders
+Click on SE-PROJECT folder to view the backend and frontend
